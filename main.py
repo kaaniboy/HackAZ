@@ -4,7 +4,7 @@ from flask import request
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
-import time
+from datetime import datetime, timedelta
 
 auth = Oauth1Authenticator(
 	consumer_key="niAZAbxG4R-zMR_BXSXCSg",
@@ -46,8 +46,10 @@ def retrieveTweets():
 	api = twitter.Api(consumer_key= "gMUVzhubG78H2o3HYWFY5csQQ", consumer_secret = "Tc3M4vrraHni2vUWZH9PdeDdUhuHHqbIcpDy9OZjvIICcXgclS", access_token_key = "984138848-PhpKudC6iLRjwLuU1LBbOH5hq4iknM3NoI7jcizL", access_token_secret = "EHazGd0Xgx9LGFVxtKgwC5hVzLns7A8orJphSNn45CqKr")
 
 	query = request.args.get('query')
-	date = time.strftime("%Y-%m-%d")
-	results = api.GetSearch(raw_query = 'q=' + query + '&since=' + date + '&count=100')
+
+	sinceDate = datetime.today() - timedelta(days=7)
+	since = sinceDate.strftime("%Y-%m-%d")
+	results = api.GetSearch(raw_query = 'q=' + query + '&since=' + since + '&count=100')
 	tweets = [extract_tweet(tweet) for tweet in results]
 	return jsonify(tweets)
 
