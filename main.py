@@ -111,7 +111,7 @@ def run_simulation():
 
 	for epoch in range(0, EPOCHS):
 		total_fitness = calc_total_fitness(population)
-		print('Total fitness: ' + str(total_fitness), file=sys.stderr)
+		print('Total fitness: (' + str(len(population)) + '): ' + str(total_fitness), file=sys.stderr)
 
 		elites = []
 		mutants = []
@@ -122,13 +122,22 @@ def run_simulation():
 
 		for i in range(0, MUTATION_OFFSET):
 			base = roulette_select(population, total_fitness)
-			mutants.append(base.mutate(museums, breakfasts, lunches, dinners))
+
+			mutant = base.mutate(museums, breakfasts, lunches, dinners)
+			while not mutant.isValid():
+				mutant = base.mutate(museums, breakfasts, lunches, dinners)
+
+			mutants.append(mutant)
 
 		for i in range(0, POPULATION_SIZE - ELITISM_OFFSET - MUTATION_OFFSET):
 			parent1 = roulette_select(population, total_fitness)
 			parent2 = roulette_select(population, total_fitness)
 
-			others.append(parent1.crossover(parent2))
+			child = parent1.crossover(parent2)
+			while not child.isValid():
+				child = parent1.crossover(parent2)
+
+			others.append(child)
 
 		population = elites + mutants + others
 
@@ -147,8 +156,7 @@ def gen_initial_population(size, museums, breakfasts, lunches, dinners):
 
 		random.shuffle(museums)
 		schedule.morning_activities = museums[:2]
-		random.shuffle(museums)
-		schedule.afternoon_activities = museums[:2]
+		schedule.afternoon_activities = museums[2:4]
 
 		population.append(schedule)
 	return population

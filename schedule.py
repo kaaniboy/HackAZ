@@ -130,5 +130,12 @@ class Schedule:
 
         return child
 
+    def isValid(self):
+        if self.morning_activities[0] == self.morning_activities[1]:
+            return False
+        if self.afternoon_activities[0] == self.afternoon_activities[1]:
+            return False
+        return True
+
 def dist(first, second):
     return math.sqrt((first['lat'] - second['lat']) ** 2 + (first['long'] - second['long']) ** 2)
