@@ -97,7 +97,7 @@ def extract_tweet(tweet):
 			'created_at': created_at}
 
 def run_simulation():
-	EPOCHS = 5
+	EPOCHS = 50
 	POPULATION_SIZE = 100
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
@@ -115,15 +115,22 @@ def run_simulation():
 
 		elites = []
 		mutants = []
+		others = []
 
 		for i in range(0, ELITISM_OFFSET):
 			elites.append(roulette_select(population, total_fitness))
+
 		for i in range(0, MUTATION_OFFSET):
-			pass
+			base = roulette_select(population, total_fitness)
+			mutants.append(base.mutate(museums, breakfasts, lunches, dinners))
+
 		for i in range(0, POPULATION_SIZE - ELITISM_OFFSET - MUTATION_OFFSET):
+			parent1 = roulette_select(population, total_fitness)
+			parent2 = roulette_select(population, total_fitness)
 
+			others.append(parent1.crossover(parent2))
 
-
+		population = elites + mutants + others
 
 	sch = roulette_select(population, total_fitness)
 	print('Roulette fitness: ' + str(sch.toJSON()['fitness']), file=sys.stderr)
