@@ -66,7 +66,7 @@ def retrieve_activities(latitude, longitude, terms):
 		data = [extract_business(business, term) for business in response.businesses]
 		complete_data = complete_data + data
 
-	complete_data = complete_data + retrieve_amadeus(latitude, longitude, '50')
+	complete_data = complete_data + retrieve_amadeus(latitude, longitude, '10')
 
 	return complete_data
 
