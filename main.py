@@ -38,12 +38,12 @@ def retrieve_restaurants(city, meal):
 	data = [extract_business(business) for business in response.businesses]
 	return data
 
-@app.route("/museums")
-def museums():
+@app.route("/activities")
+def activities():
 	city = request.args.get('city')
-	return jsonify(retrieve_museums(city))
+	return jsonify(retrieve_activities(city))
 
-def retrieve_museums(city):
+def retrieve_activities(city):
 	params = {
 		'term': 'museum'
 	}
@@ -102,7 +102,7 @@ def run_simulation():
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
 
-	museums = retrieve_museums("Phoenix")
+	museums = retrieve_activities("Phoenix")
 	breakfasts = retrieve_restaurants("Phoenix", "breakfast")
 	lunches = retrieve_restaurants("Phoenix", "lunch")
 	dinners = retrieve_restaurants("Phoenix", "dinner")
@@ -111,7 +111,7 @@ def run_simulation():
 
 	for epoch in range(0, EPOCHS):
 		total_fitness = calc_total_fitness(population)
-		print('Total fitness: (' + str(len(population)) + '): ' + str(total_fitness), file=sys.stderr)
+		print('Total fitness: (' + str(epoch) + '): ' + str(total_fitness), file=sys.stderr)
 
 		elites = []
 		mutants = []
@@ -141,8 +141,8 @@ def run_simulation():
 
 		population = elites + mutants + others
 
-	sch = roulette_select(population, total_fitness)
-	print('Roulette fitness: ' + str(sch.toJSON()['fitness']), file=sys.stderr)
+	sch = find_best_in_population(population)
+	print('Best Schedule: ' + str(sch.toJSON()['fitness']), file=sys.stderr)
 	return population
 
 
@@ -160,6 +160,19 @@ def gen_initial_population(size, museums, breakfasts, lunches, dinners):
 
 		population.append(schedule)
 	return population
+
+def find_best_in_population(population):
+	best_fitness = population[0].toJSON()['fitness']
+	best = population[0]
+
+	for i in range(1, len(population)):
+		curr_fitness = population[i].toJSON()['fitness']
+
+		if curr_fitness > best_fitness:
+			best = population[i]
+			best_fitness = curr_fitness
+
+	return best
 
 def calc_total_fitness(population):
 	total = 0
