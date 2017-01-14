@@ -7,6 +7,7 @@ from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
 import json
 import random
+import os
 import sys
 import requests
 from datetime import datetime, timedelta
