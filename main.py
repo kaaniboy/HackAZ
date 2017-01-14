@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask import Flask
+from flask import request
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 
@@ -20,7 +21,9 @@ def restaurants():
         'term': 'food'
     }
 
-    response = client.search('San Francisco', **params)
+    city = request.args.get('city')
+
+    response = client.search(city, **params)
     data = [extract_business(business) for business in response.businesses]
     return jsonify(data)
 
@@ -30,7 +33,9 @@ def museums():
         'term': 'museum'
     }
 
-    response = client.search('San Francisco', **params)
+    city = request.args.get('city')
+
+    response = client.search(city, **params)
     data = [extract_business(business) for business in response.businesses]
     return jsonify(data)
 
