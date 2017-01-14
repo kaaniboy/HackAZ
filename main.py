@@ -22,8 +22,21 @@ def hello():
     }
 
     response = client.search('San Francisco', **params)
-    data = [business.name for business in response.businesses]
+    data = [extract_business(business) for business in response.businesses]
     return jsonify(data)
+
+def extract_business(business):
+    id = business.id
+    name = business.name
+    rating = business.rating
+    image_url = business.image_url
+    review_count = business.review_count
+
+    return {'id': id,
+            'name': name,
+            'rating': rating,
+            'image_url': image_url,
+            'review_count': review_count }
 
 if __name__ == "__main__":
     app.run()
