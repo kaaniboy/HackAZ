@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	return "Index"
+	return "HackAZ 2017 - Travel Scheduler"
 
 @app.route("/restaurants")
 def restaurants():
