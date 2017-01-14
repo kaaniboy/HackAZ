@@ -52,7 +52,6 @@ def retrieve_activities(city):
 	data = [extract_business(business) for business in response.businesses]
 	return data
 
-
 @app.route('/twitter')
 def retrieveTweets():
 	api = twitter.Api(consumer_key= "gMUVzhubG78H2o3HYWFY5csQQ", consumer_secret = "Tc3M4vrraHni2vUWZH9PdeDdUhuHHqbIcpDy9OZjvIICcXgclS", access_token_key = "984138848-PhpKudC6iLRjwLuU1LBbOH5hq4iknM3NoI7jcizL", access_token_secret = "EHazGd0Xgx9LGFVxtKgwC5hVzLns7A8orJphSNn45CqKr")
@@ -167,6 +166,8 @@ def find_best_in_population(population):
 
 	for i in range(1, len(population)):
 		curr_fitness = population[i].toJSON()['fitness']
+		print('Fitness: ' + str(curr_fitness), file=sys.stderr)
+
 
 		if curr_fitness > best_fitness:
 			best = population[i]
