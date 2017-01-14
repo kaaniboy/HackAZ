@@ -147,13 +147,19 @@ def retrieveTweets():
 def simulate():
 	latitude = request.args.get("lat")
 	longitude = request.args.get("long")
+	terms = request.args.get("terms")
+
+	if terms == None:
+		terms = ["museum"]
+	else:
+		terms = terms.split(",")
 
 	if latitude == None:
 		latitude = LAT
 	if longitude == None:
 		longitude = LONG
-	
-	best = run_simulation(latitude, longitude)
+
+	best = run_simulation(latitude, longitude, terms)
 
 	return jsonify(best.toJSON())
 	#return jsonify([sch.toJSON() for sch in run_simulation()])
@@ -199,7 +205,7 @@ def extract_tweet(tweet):
 	return {'text': text,
 			'created_at': created_at}
 
-def run_simulation(latitude, longitude):
+def run_simulation(latitude, longitude, terms):
 	EPOCHS = int(os.environ.get("EPOCHS", 50))
 	POPULATION_SIZE = int(os.environ.get("POPULATION_SIZE", 100))
 	ELITISM_OFFSET = 10
@@ -207,7 +213,7 @@ def run_simulation(latitude, longitude):
 	print("Running GE with " + str(EPOCHS) + " epochs and population of " + str(POPULATION_SIZE), file=sys.stderr)
 	print("====================================================", file=sys.stderr)
 
-	museums = retrieve_activities(latitude, longitude, ["museum"])
+	museums = retrieve_activities(latitude, longitude, terms)
 	breakfasts = retrieve_restaurants(latitude, longitude, "breakfast")
 	lunches = retrieve_restaurants(latitude, longitude, "lunch")
 	dinners = retrieve_restaurants(latitude, longitude, "dinner")
