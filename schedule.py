@@ -13,6 +13,8 @@ class Schedule:
         dist = self.dist_error()
         rating = self.rating_error()
 
+        return dist + rating
+
     def dist_error(self):
         dist_error = dist(self.breakfast, self.morning_activities[0])
 

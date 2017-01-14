@@ -21,6 +21,10 @@ app = Flask(__name__)
 def restaurants():
 	city = request.args.get('city')
 	meal = request.args.get('meal')
+
+	return retrieve_restaurants(city, meal)
+
+def retrieve_restaurants(city, meal):
 	params = {
 		'term': meal
 	}
@@ -31,15 +35,18 @@ def restaurants():
 
 @app.route("/museums")
 def museums():
+	city = request.args.get('city')
+	return retrieve_museums(city)
+
+def retrieve_museums(city):
 	params = {
 		'term': 'museum'
 	}
 
-	city = request.args.get('city')
-
 	response = client.search(city, **params)
 	data = [extract_business(business) for business in response.businesses]
 	return jsonify(data)
+
 
 @app.route('/twitter')
 def retrieveTweets():
@@ -78,6 +85,15 @@ def extract_tweet(tweet):
 
 	return {'text': text,
 			'created_at': created_at}
+
+"""
+def run_simulation():
+	EPOCHS = 50
+	POPULATION_SIZE = 50
+	population = []
+
+def generate_initial_population():
+"""
 
 if __name__ == "__main__":
 	app.run()
