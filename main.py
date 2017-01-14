@@ -60,13 +60,17 @@ def extract_business(business):
 	image_url = business.image_url
 	review_count = business.review_count
 	snippet_text = business.snippet_text
+	lat = business.location.coordinate.latitude
+	long = business.location.coordinate.longitude
 
 	return {'id': id,
 			'name': name,
 			'rating': rating,
 			'image_url': image_url,
 			'review_count': review_count,
-			'snippet_text': snippet_text}
+			'snippet_text': snippet_text,
+			'lat': lat,
+			'long': long}
 
 def extract_tweet(tweet):
 	text = tweet.text
