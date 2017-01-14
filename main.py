@@ -192,7 +192,7 @@ def extract_tweet(tweet):
 
 def run_simulation():
 	EPOCHS = 50
-	POPULATION_SIZE = 100
+	POPULATION_SIZE = 60
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
 
