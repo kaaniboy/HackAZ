@@ -8,6 +8,7 @@ import twitter
 import json
 import random
 import sys
+import requests
 from datetime import datetime, timedelta
 from schedule import Schedule
 
@@ -60,7 +61,70 @@ def retrieve_activities(latitude, longitude, terms):
 		data = [extract_business(business, term) for business in response.businesses]
 		complete_data = complete_data + data
 
+	complete_data = complete_data + retrieve_amadeus(latitude, longitude, '50')
+
 	return complete_data
+
+@app.route('/amadeus')
+def amadeus():
+	latitude = request.args.get("lat")
+	longitude = request.args.get("long")
+	radius = request.args.get("radius")
+
+	return jsonify(retrieve_amadeus(latitude, longitude, radius))
+
+def retrieve_amadeus(latitude, longitude, radius):
+	apikey = "JDe6GYa6Xf1WvmCcRJs39xHPL905xbOi"
+
+	query = "https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-circle?"
+	query += "apikey=" + apikey
+
+	if (latitude != None and longitude != None and radius != None):
+		query += "&latitude=" + latitude + "&longitude=" + longitude + "&radius=" + radius
+
+	query += "&social_media=true"
+
+	r = requests.get(query)
+	return parseAmadeusJSONIntoObject(r.text)
+
+def parseAmadeusJSONIntoObject(jsonString):
+	data = json.loads(jsonString)
+	try:
+		pointsOfInterest = data["points_of_interest"]
+	except:
+		return "[]"
+
+	points = []
+
+	for i in range (0, len(pointsOfInterest)):
+		singleData = {}
+
+		try:
+			name = data["points_of_interest"][i]["title"]
+
+			singleData["id"] = None
+			singleData["type"] = "amadeus"
+			singleData["name"] = name
+			singleData["image_list"] = data["points_of_interest"][i]["main_image"]
+			singleData["description"]= data["points_of_interest"][i]["details"]["short_description"]
+			singleData["date"] = None
+			singleData["TimeTBD"] = None
+			singleData["rating"] = data["points_of_interest"][i]["grades"]["yapq_grade"]
+			singleData["rating_count"] = None
+			singleData["genre"] = None
+			#singleData["price"] = None
+			singleData["latitude"] = data["points_of_interest"][i]["location"]["latitude"]
+			singleData["longitude"] = data["points_of_interest"][i]["location"]["longitude"]
+			#singleData["twitter"] = twitterRequest(removeInvalidCharacters(name))
+			singleData["link"] = data["points_of_interest"][i]["details"]["wiki_page_link"]
+
+			points.append(singleData)
+		except:
+			print("FAIL: " + str(singleData), file=sys.stderr)
+
+	totalData = {}
+	totalData = points
+	return totalData
 
 @app.route('/twitter')
 def retrieveTweets():
