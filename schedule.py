@@ -141,4 +141,4 @@ class Schedule:
         return True
 
 def dist(first, second):
-    return math.sqrt((first['lat'] - second['lat']) ** 2 + (first['long'] - second['long']) ** 2)
+    return math.sqrt((first['latitude'] - second['latitude']) ** 2 + (first['longitude'] - second['longitude']) ** 2)

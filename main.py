@@ -18,39 +18,49 @@ auth = Oauth1Authenticator(
 	token_secret="3qsdQR53xxyQtUQMimHrXRvK2e0"
 )
 
+LAT = 33.448376
+LONG = -112.074036
+
 client = Client(auth)
 
 app = Flask(__name__)
 
 @app.route("/restaurants")
 def restaurants():
-	city = request.args.get('city')
+	latitude = request.args.get('lat')
+	longitude = request.args.get('long')
 	meal = request.args.get('meal')
 
-	return jsonify(retrieve_restaurants(city, meal))
+	return jsonify(retrieve_restaurants(latitude, longitude, meal))
 
-def retrieve_restaurants(city, meal):
+def retrieve_restaurants(latitude, longitude, meal):
 	params = {
 		'term': meal
 	}
 
-	response = client.search(city, **params)
-	data = [extract_business(business) for business in response.businesses]
+	response = client.search_by_coordinates(latitude, longitude, **params)
+	data = [extract_business(business, "restaurant") for business in response.businesses]
 	return data
 
 @app.route("/activities")
 def activities():
-	city = request.args.get('city')
-	return jsonify(retrieve_activities(city))
+	latitude = request.args.get('lat')
+	longitude = request.args.get('long')
+	terms = request.args.get('terms').split(',')
+	return jsonify(retrieve_activities(latitude, longitude, terms))
 
-def retrieve_activities(city):
-	params = {
-		'term': 'museum'
-	}
+def retrieve_activities(latitude, longitude, terms):
+	complete_data = []
+	for term in terms:
+		params = {
+			'term': term
+		}
 
-	response = client.search(city, **params)
-	data = [extract_business(business) for business in response.businesses]
-	return data
+		response = client.search_by_coordinates(latitude, longitude, **params)
+		data = [extract_business(business, term) for business in response.businesses]
+		complete_data = complete_data + data
+
+	return complete_data
 
 @app.route('/twitter')
 def retrieveTweets():
@@ -69,24 +79,38 @@ def simulate():
 	return jsonify([sch.toJSON() for sch in run_simulation()])
 	#return str(len(run_simulation()))
 
-def extract_business(business):
+def extract_business(business, attraction_type):
 	id = business.id
+	type = attraction_type
 	name = business.name
+	image_list = business.image_url
+	description = business.snippet_text
+	date = None
+	time = None
+	timeTBD = None
 	rating = business.rating
-	image_url = business.image_url
-	review_count = business.review_count
-	snippet_text = business.snippet_text
-	lat = business.location.coordinate.latitude
-	long = business.location.coordinate.longitude
+	rating_count = business.review_count
+	genre = business.categories
+	#price = ...
+	latitude = business.location.coordinate.latitude
+	longitude = business.location.coordinate.longitude
+	#twitter = twitterRequest(removeInvalidCharacters(name))
+	link = business.url
 
 	return {'id': id,
+			'type' : type,
 			'name': name,
+			'image_list': image_list,
+			'description': description,
+			'date' : date,
+			'time' : time,
+			'timeTBD' : timeTBD,
 			'rating': rating,
-			'image_url': image_url,
-			'review_count': review_count,
-			'snippet_text': snippet_text,
-			'lat': lat,
-			'long': long}
+			'rating_count': rating_count,
+			'genre' : genre,
+			'latitude': latitude,
+			'longitude': longitude,
+			'link' : link}
 
 def extract_tweet(tweet):
 	text = tweet.text
@@ -101,10 +125,10 @@ def run_simulation():
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
 
-	museums = retrieve_activities("Phoenix")
-	breakfasts = retrieve_restaurants("Phoenix", "breakfast")
-	lunches = retrieve_restaurants("Phoenix", "lunch")
-	dinners = retrieve_restaurants("Phoenix", "dinner")
+	museums = retrieve_activities(LAT, LONG, ["museum"])
+	breakfasts = retrieve_restaurants(LAT, LONG, "breakfast")
+	lunches = retrieve_restaurants(LAT, LONG, "lunch")
+	dinners = retrieve_restaurants(LAT, LONG, "dinner")
 
 	population = gen_initial_population(POPULATION_SIZE, museums, breakfasts, lunches, dinners)
 
