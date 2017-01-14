@@ -1,4 +1,6 @@
 import math
+import random
+
 class Schedule:
     def __init__(self):
         self.DIST_WEIGHT = .1
@@ -8,8 +10,8 @@ class Schedule:
         self.lunch = None
         self.dinner = None
 
-        self.morning_activities = None
-        self.afternoon_activities = None
+        self.morning_activities = []
+        self.afternoon_activities = []
 
     def toJSON(self):
         res = {
@@ -63,8 +65,35 @@ class Schedule:
 
 
     def crossover(self, other):
-        pass
+        child = Schedule()
+        for i in range(0, len(self.morning_activities)):
+            if random.random() < 0.5:
+                child.morning_activities.append(self.morning_activities[i])
+            else:
+                child.morning_activities.append(other.morning_activities[i])
 
+        for i in range(0, len(self.afternoon_activities)):
+            if random.random() < 0.5:
+                child.afternoon_activities.append(self.afternoon_activities[i])
+            else:
+                child.afternoon_activities.append(other.afternoon_activities[i])
+
+        if random.random() < 0.5:
+            child.breakfast = self.breakfast
+        else:
+            child.breakfast = other.breakfast
+
+        if random.random() < 0.5:
+            child.lunch = self.lunch
+        else:
+            child.lunch = other.lunch
+
+        if random.random() < 0.5:
+            child.dinner = self.dinner
+        else:
+            child.dinner = other.dinner
+
+        return child
 
 def dist(first, second):
     return math.sqrt((first['lat'] - second['lat']) ** 2 + (first['long'] - second['long']) ** 2)

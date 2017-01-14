@@ -101,7 +101,6 @@ def run_simulation():
 	POPULATION_SIZE = 100
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
-	population = []
 
 	museums = retrieve_museums("Phoenix")
 	breakfasts = retrieve_restaurants("Phoenix", "breakfast")
@@ -122,7 +121,7 @@ def run_simulation():
 		for i in range(0, MUTATION_OFFSET):
 			pass
 		for i in range(0, POPULATION_SIZE - ELITISM_OFFSET - MUTATION_OFFSET):
-			
+
 
 
 
