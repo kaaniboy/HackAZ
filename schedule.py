@@ -95,5 +95,40 @@ class Schedule:
 
         return child
 
+    def mutate(self, museums, breakfasts, lunches, dinners):
+        MUTATION_RATE = 0.20
+        child = Schedule()
+
+        if random.random() < MUTATION_RATE:
+            child.breakfast = random.choice(breakfasts)
+        else:
+            child.breakfast = self.breakfast
+
+        if random.random() < MUTATION_RATE:
+            child.lunch = random.choice(lunches)
+        else:
+            child.lunch = self.lunch
+
+        if random.random() < MUTATION_RATE:
+            child.dinner = random.choice(dinners)
+        else:
+            child.dinner = self.dinner
+
+        random.shuffle(museums)
+        for i in range(0, len(self.morning_activities)):
+            if random.random() < MUTATION_RATE:
+                child.morning_activities.append(museums[i])
+            else:
+                child.morning_activities.append(self.morning_activities[i])
+
+        random.shuffle(museums)
+        for i in range(0, len(self.afternoon_activities)):
+            if random.random() < MUTATION_RATE:
+                child.afternoon_activities.append(museums[i])
+            else:
+                child.afternoon_activities.append(self.afternoon_activities[i])
+
+        return child
+
 def dist(first, second):
     return math.sqrt((first['lat'] - second['lat']) ** 2 + (first['long'] - second['long']) ** 2)
