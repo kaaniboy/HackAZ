@@ -26,6 +26,10 @@ client = Client(auth)
 
 app = Flask(__name__)
 
+@app.route("/")
+def index():
+	return "Index"
+
 @app.route("/restaurants")
 def restaurants():
 	latitude = request.args.get('lat')
