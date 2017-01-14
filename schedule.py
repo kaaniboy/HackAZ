@@ -135,6 +135,9 @@ class Schedule:
             return False
         if self.afternoon_activities[0] == self.afternoon_activities[1]:
             return False
+        for activity in self.morning_activities:
+            if activity in self.afternoon_activities:
+                return False
         return True
 
 def dist(first, second):
