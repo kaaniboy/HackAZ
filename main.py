@@ -5,6 +5,7 @@ from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
 import json
+import random
 from datetime import datetime, timedelta
 from schedule import Schedule
 
@@ -96,6 +97,7 @@ def extract_tweet(tweet):
 def run_simulation():
 	EPOCHS = 50
 	POPULATION_SIZE = 100
+	epoch = 0
 	population = []
 
 	museums = retrieve_museums("Phoenix")
@@ -112,6 +114,15 @@ def gen_initial_population(size, museums, breakfasts, lunches, dinners):
 	population = []
 	for i in range(0, size):
 		schedule = Schedule()
+		schedule.breakfast = random.choice(breakfasts)
+		schedule.lunch = random.choice(lunches)
+		schedule.dinner = random.choice(dinners)
+
+		random.shuffle(museums)
+		schedule.morning_activities = museums[:2]
+		random.shuffle(museums)
+		schedule.afternoon_activities = museums[:2]
+
 		population.append(schedule)
 	return population
 
