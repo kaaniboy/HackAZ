@@ -19,8 +19,8 @@ auth = Oauth1Authenticator(
 	token_secret="3qsdQR53xxyQtUQMimHrXRvK2e0"
 )
 
-LAT = 33.448376
-LONG = -112.074036
+LAT = 40.730610
+LONG = -73.935242
 
 client = Client(auth)
 
@@ -80,7 +80,7 @@ def retrieve_amadeus(latitude, longitude, radius):
 	query += "apikey=" + apikey
 
 	if (latitude != None and longitude != None and radius != None):
-		query += "&latitude=" + latitude + "&longitude=" + longitude + "&radius=" + radius
+		query += "&latitude=" + str(latitude) + "&longitude=" + str(longitude) + "&radius=" + str(radius)
 
 	query += "&social_media=true"
 
@@ -140,7 +140,9 @@ def retrieveTweets():
 
 @app.route('/simulate')
 def simulate():
-	return jsonify([sch.toJSON() for sch in run_simulation()])
+	best = run_simulation()
+	return jsonify(best.toJSON())
+	#return jsonify([sch.toJSON() for sch in run_simulation()])
 	#return str(len(run_simulation()))
 
 def extract_business(business, attraction_type):
@@ -230,7 +232,8 @@ def run_simulation():
 
 	sch = find_best_in_population(population)
 	print('Best Schedule: ' + str(sch.toJSON()['fitness']), file=sys.stderr)
-	return population
+	return sch
+	#return population
 
 
 def gen_initial_population(size, museums, breakfasts, lunches, dinners):
