@@ -4,7 +4,9 @@ from flask import request
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
+import json
 from datetime import datetime, timedelta
+from schedule import Schedule
 
 auth = Oauth1Authenticator(
 	consumer_key="niAZAbxG4R-zMR_BXSXCSg",
@@ -22,7 +24,7 @@ def restaurants():
 	city = request.args.get('city')
 	meal = request.args.get('meal')
 
-	return retrieve_restaurants(city, meal)
+	return jsonify(retrieve_restaurants(city, meal))
 
 def retrieve_restaurants(city, meal):
 	params = {
@@ -31,12 +33,12 @@ def retrieve_restaurants(city, meal):
 
 	response = client.search(city, **params)
 	data = [extract_business(business) for business in response.businesses]
-	return jsonify(data)
+	return data
 
 @app.route("/museums")
 def museums():
 	city = request.args.get('city')
-	return retrieve_museums(city)
+	return jsonify(retrieve_museums(city))
 
 def retrieve_museums(city):
 	params = {
@@ -45,7 +47,7 @@ def retrieve_museums(city):
 
 	response = client.search(city, **params)
 	data = [extract_business(business) for business in response.businesses]
-	return jsonify(data)
+	return data
 
 
 @app.route('/twitter')
@@ -59,6 +61,11 @@ def retrieveTweets():
 	results = api.GetSearch(raw_query = 'q=' + query + '&since=' + since + '&count=100')
 	tweets = [extract_tweet(tweet) for tweet in results]
 	return jsonify(tweets)
+
+@app.route('/simulate')
+def simulate():
+	return jsonify([sch.toJSON() for sch in run_simulation()])
+	#return str(len(run_simulation()))
 
 def extract_business(business):
 	id = business.id
@@ -86,14 +93,27 @@ def extract_tweet(tweet):
 	return {'text': text,
 			'created_at': created_at}
 
-"""
 def run_simulation():
 	EPOCHS = 50
-	POPULATION_SIZE = 50
+	POPULATION_SIZE = 100
 	population = []
 
-def generate_initial_population():
-"""
+	museums = retrieve_museums("Phoenix")
+	breakfasts = retrieve_restaurants("Phoenix", "breakfast")
+	lunches = retrieve_restaurants("Phoenix", "lunch")
+	dinners = retrieve_restaurants("Phoenix", "dinner")
+
+	population = gen_initial_population(POPULATION_SIZE, museums, breakfasts, lunches, dinners)
+
+	return population
+
+
+def gen_initial_population(size, museums, breakfasts, lunches, dinners):
+	population = []
+	for i in range(0, size):
+		schedule = Schedule()
+		population.append(schedule)
+	return population
 
 if __name__ == "__main__":
 	app.run()

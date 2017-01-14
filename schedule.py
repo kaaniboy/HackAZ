@@ -8,6 +8,17 @@ class Schedule:
         self.morning_activities = None
         self.afternoon_activities = None
 
+    def toJSON(self):
+        res = {
+            'breakfast': self.breakfast,
+            'lunch': self.lunch,
+            'dinner': self.dinner,
+            'morning_activities': self.morning_activities,
+            'afternoon_activities': self.afternoon_activities
+        }
+
+        return res
+
     #We will attempt to minimize this value.
     def error(self):
         dist = self.dist_error()
