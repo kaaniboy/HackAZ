@@ -191,10 +191,12 @@ def extract_tweet(tweet):
 			'created_at': created_at}
 
 def run_simulation():
-	EPOCHS = 50
-	POPULATION_SIZE = 60
+	EPOCHS = os.environ.get("EPOCHS", 50)
+	POPULATION_SIZE = os.environ.get("POPULATION_SIZE", 100)
 	ELITISM_OFFSET = 10
 	MUTATION_OFFSET = 5
+	print("Running GE with " + str(EPOCHS) + " epochs and population of " + str(POPULATION_SIZE), file=sys.stderr)
+	print("====================================================", file=sys.stderr)
 
 	museums = retrieve_activities(LAT, LONG, ["museum"])
 	breakfasts = retrieve_restaurants(LAT, LONG, "breakfast")
