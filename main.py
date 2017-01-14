@@ -17,11 +17,11 @@ app = Flask(__name__)
 
 @app.route("/restaurants")
 def restaurants():
-    params = {
-        'term': 'food'
-    }
-
     city = request.args.get('city')
+    meal = request.args.get('meal')
+    params = {
+        'term': meal
+    }
 
     response = client.search(city, **params)
     data = [extract_business(business) for business in response.businesses]
@@ -38,7 +38,6 @@ def museums():
     response = client.search(city, **params)
     data = [extract_business(business) for business in response.businesses]
     return jsonify(data)
-
 
 def extract_business(business):
     id = business.id
