@@ -1,6 +1,9 @@
 import math
 class Schedule:
     def __init__(self):
+        self.DIST_WEIGHT = .1
+        self.RATING_WEIGHT = .1
+
         self.breakfast = None
         self.lunch = None
         self.dinner = None
@@ -14,7 +17,11 @@ class Schedule:
             'lunch': self.lunch,
             'dinner': self.dinner,
             'morning_activities': self.morning_activities,
-            'afternoon_activities': self.afternoon_activities
+            'afternoon_activities': self.afternoon_activities,
+            'dist_error': self.dist_error(),
+            'rating_error': self.rating_error(),
+            'total_error': self.error(),
+            'fitness': 100 * (1.0 / self.error())
         }
 
         return res
@@ -40,19 +47,19 @@ class Schedule:
 
         dist_error = dist_error + dist(self.afternoon_activities[-1], self.dinner)
 
-        return dist_error
+        return dist_error * self.DIST_WEIGHT
 
     def rating_error(self):
-        rating_error = 5 - self.breakfast.rating
-        rating_error = rating_error + (5 - self.lunch.rating)
-        rating_error = rating_error + (5 - self.dinner.rating)
+        rating_error = 5 - self.breakfast['rating']
+        rating_error = rating_error + (5 - self.lunch['rating'])
+        rating_error = rating_error + (5 - self.dinner['rating'])
 
         for i in range(0, len(self.morning_activities)):
-            rating_error = rating_error + (5 - self.morning_activities[i].rating)
+            rating_error = rating_error + (5 - self.morning_activities[i]['rating'])
         for i in range(0, len(self.afternoon_activities)):
-            rating_error = rating_error + (5 - self.afternoon_activities[i].rating)
+            rating_error = rating_error + (5 - self.afternoon_activities[i]['rating'])
 
-        return rating_error
+        return rating_error * self.RATING_WEIGHT
 
 
     def crossover(self, other):
@@ -60,4 +67,4 @@ class Schedule:
 
 
 def dist(first, second):
-    return math.sqrt((first.lat - second.lat) ** 2 + (first.long - second.long) ** 2)
+    return math.sqrt((first['lat'] - second['lat']) ** 2 + (first['long'] - second['long']) ** 2)

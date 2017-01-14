@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import jsonify
 from flask import Flask
 from flask import request
@@ -6,6 +7,7 @@ from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
 import json
 import random
+import sys
 from datetime import datetime, timedelta
 from schedule import Schedule
 
@@ -95,9 +97,10 @@ def extract_tweet(tweet):
 			'created_at': created_at}
 
 def run_simulation():
-	EPOCHS = 50
+	EPOCHS = 5
 	POPULATION_SIZE = 100
-	epoch = 0
+	ELITISM_OFFSET = 10
+	MUTATION_OFFSET = 5
 	population = []
 
 	museums = retrieve_museums("Phoenix")
@@ -107,6 +110,24 @@ def run_simulation():
 
 	population = gen_initial_population(POPULATION_SIZE, museums, breakfasts, lunches, dinners)
 
+	for epoch in range(0, EPOCHS):
+		total_fitness = calc_total_fitness(population)
+		print('Total fitness: ' + str(total_fitness), file=sys.stderr)
+
+		elites = []
+		mutants = []
+
+		for i in range(0, ELITISM_OFFSET):
+			elites.append(roulette_select(population, total_fitness))
+		for i in range(0, MUTATION_OFFSET):
+			pass
+		for i in range(0, POPULATION_SIZE - ELITISM_OFFSET - MUTATION_OFFSET):
+			
+
+
+
+	sch = roulette_select(population, total_fitness)
+	print('Roulette fitness: ' + str(sch.toJSON()['fitness']), file=sys.stderr)
 	return population
 
 
@@ -125,6 +146,21 @@ def gen_initial_population(size, museums, breakfasts, lunches, dinners):
 
 		population.append(schedule)
 	return population
+
+def calc_total_fitness(population):
+	total = 0
+	for sch in population:
+		total = total + sch.toJSON()['fitness']
+	return total
+
+def roulette_select(population, total_fitness):
+	rand = random.random()
+	i = 0
+	for sch in population:
+		i = i + (sch.toJSON()['fitness'] / (1.0 * total_fitness))
+		if rand <= i:
+			return sch
+	return None
 
 if __name__ == "__main__":
 	app.run()
