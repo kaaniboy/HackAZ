@@ -14,16 +14,26 @@ client = Client(auth)
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
+@app.route("/restaurants")
+def restaurants():
     params = {
-        'term': 'food',
-        'lang': 'fr'
+        'term': 'food'
     }
 
     response = client.search('San Francisco', **params)
     data = [extract_business(business) for business in response.businesses]
     return jsonify(data)
+
+@app.route("/museums")
+def museums():
+    params = {
+        'term': 'museum'
+    }
+
+    response = client.search('San Francisco', **params)
+    data = [extract_business(business) for business in response.businesses]
+    return jsonify(data)
+
 
 def extract_business(business):
     id = business.id
@@ -31,12 +41,14 @@ def extract_business(business):
     rating = business.rating
     image_url = business.image_url
     review_count = business.review_count
+    snippet_text = business.snippet_text
 
     return {'id': id,
             'name': name,
             'rating': rating,
             'image_url': image_url,
-            'review_count': review_count }
+            'review_count': review_count,
+            'snippet_text': snippet_text}
 
 if __name__ == "__main__":
     app.run()
