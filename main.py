@@ -29,10 +29,6 @@ client = Client(auth)
 app = Flask(__name__)
 
 @app.route("/")
-def index():
-	return "HackAZ 2017 - Travel Scheduler"
-
-@app.route("/home")
 def home():
 	return render_template('index.html')
 
@@ -60,7 +56,7 @@ def activities():
 	terms = request.args.get('terms').split(',')
 	return jsonify(retrieve_activities(latitude, longitude, terms))
 
-def retrieve_activities(latitude, longitude, terms):	
+def retrieve_activities(latitude, longitude, terms):
 	complete_data = []
 	for term in terms:
 		params = {
