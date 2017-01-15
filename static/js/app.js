@@ -1,8 +1,9 @@
 GOOGLE_API_KEY = 'AIzaSyCMgw5bWf-ZIGIsUYcFgK8v5_4uQeJUTzE';
+var mapMarkers = [];
+var paths = [];
 
 $(document).ready(function() {
 	var map = L.map('map').setView([33.448376, -112.074036], 13);
-	var mapMarkers = [];
 
 	breakfastIcon = L.icon({
     iconUrl: '/static/img/breakfast.png',
@@ -70,6 +71,7 @@ $(document).ready(function() {
 			map.removeLayer(marker);
 		});
 		mapMarkers = [];
+		paths = [];
 		var terms = $('#terms').val()
 
 		submitButton.attr("disabled", true);
@@ -133,7 +135,7 @@ $(document).ready(function() {
 						var curr = schedule[i];
 
 						var polyline = createPath(map, prev.latitude, prev.longitude, curr.latitude, curr.longitude);
-						mapMarkers.push(polyline);
+						paths.push(polyline);
 					}
 				}
 				$('#map_left_col').addClass('col-md-9');
@@ -190,12 +192,13 @@ function addListElement(activity) {
 	listElement.setAttribute("class", "list-group-item");
 	listElement.setAttribute("count", numElements);
 
-	listElement.innerHTML = "<h5>" + activity.name + "</h5>";
+	listElement.innerHTML = "<h5>" + (numElements + 1) + ". " + activity.name + "</h5>";
 
 	listElement.addEventListener('click', function() {
 		resetListColoring(enclosingListGroup);
 		var index = parseInt(listElement.getAttribute('count'));
 		enclosingListGroup.children().eq(index).addClass("active");
+		mapMarkers[index].openPopup();
 	});
 
 	enclosingListGroup.append(listElement);
