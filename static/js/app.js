@@ -156,7 +156,7 @@ function appendArray( mainArray,  arrayToAdd) {
 function getDataFromServer(terms, latitude, longitude, cb){
 	var xhr = new XMLHttpRequest();
 
-	var url = "https://hack-az.herokuapp.com/simulate?"
+	var url = "simulate?"
 			   		+ "lat=" + latitude + "&long=" + longitude;
 
 	if(terms != '') {
