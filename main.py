@@ -15,10 +15,10 @@ from datetime import datetime, timedelta
 from schedule import Schedule
 
 auth = Oauth1Authenticator(
-	consumer_key="niAZAbxG4R-zMR_BXSXCSg",
-	consumer_secret="QLjZH_19u9unIyfQTK5-k18slzQ",
-	token="s8ipQMaCxLziSJcVMbB1Nj20YYijfLpa",
-	token_secret="3qsdQR53xxyQtUQMimHrXRvK2e0"
+	consumer_key=os.environ.get("CONSUMER_KEY", ""),
+	consumer_secret=os.environ.get("CONSUMER_SECRET", ""),
+	token=os.environ.get("TOKEN", ""),
+	token_secret=os.environ.get("TOKEN_SECRET", "")
 )
 
 LAT = 40.730610
@@ -84,7 +84,7 @@ def amadeus():
 	return jsonify(retrieve_amadeus(latitude, longitude, radius))
 
 def retrieve_amadeus(latitude, longitude, radius):
-	apikey = "JDe6GYa6Xf1WvmCcRJs39xHPL905xbOi"
+	apikey = os.environ.get("AMADEUS_API_KEY", "")
 
 	query = "https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-circle?"
 	query += "apikey=" + apikey
