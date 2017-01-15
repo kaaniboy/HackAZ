@@ -155,7 +155,7 @@ def simulate():
 	terms = request.args.get("terms")
 
 	if terms == None:
-		terms = ["museum"]
+		terms = [""]
 	else:
 		terms = terms.split(",")
 
