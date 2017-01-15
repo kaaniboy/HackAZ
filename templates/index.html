@@ -68,6 +68,23 @@
       .tech-list li{
         padding-bottom: 5px;
       }
+      .selected {
+        background-color: gray;
+      }
+      .unselected {
+        background-color: white;
+      }
+      .nopadding {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .minpadding {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+      #list-group li {
+        cursor: pointer;
+      }
     </style>
 
 </head>
@@ -148,8 +165,16 @@
         </div>
     </section>
     <section id="map_section">
-        <div id="map"></div>
-    </section>
+      <div class="row">
+        <div id="map_left_col" class="nopadding">
+          <div id="map"></div>
+        </div>
+        <div id="map_right_col" class="col-md-3 nopadding">
+          <ul id="list-group" class="minpadding" style="cursor: click">
+          </ul>
+        </div>
+      </div>
+   </section>
     <section id="code">
         <div class="container">
             <div class="row">

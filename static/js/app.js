@@ -136,6 +136,7 @@ $(document).ready(function() {
 						mapMarkers.push(polyline);
 					}
 				}
+				$('#map_left_col').addClass('col-md-9');
 
 				scrollToMap();
 				var group = new L.featureGroup(mapMarkers);
@@ -175,8 +176,33 @@ function addMarker(map, activity, icon){
 	}
 	popupHTML += '</div>';
 
+	addListElement(activity);
 	marker.bindPopup(popupHTML);
 	return marker;
+}
+
+function addListElement(activity) {
+	console.log("addListElement called.");
+	var enclosingListGroup = $('#list-group');
+	var numElements = enclosingListGroup.children().length;
+
+	var listElement = document.createElement("li");
+	listElement.setAttribute("class", "list-group-item");
+	listElement.setAttribute("count", numElements);
+
+	listElement.innerHTML = "<h5>" + activity.name + "</h5>";
+
+	listElement.addEventListener('click', function() {
+		resetListColoring(enclosingListGroup);
+		var index = parseInt(listElement.getAttribute('count'));
+		enclosingListGroup.children().eq(index).addClass("active");
+	});
+
+	enclosingListGroup.append(listElement);
+}
+
+function resetListColoring(enclosingListGroup){
+	enclosingListGroup.children().removeClass("active");
 }
 
 function createPath(map, lat1, long1, lat2, long2){
