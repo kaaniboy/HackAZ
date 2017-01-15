@@ -70,8 +70,14 @@ $(document).ready(function() {
 		mapMarkers.forEach(function(marker) {
 			map.removeLayer(marker);
 		});
+		paths.forEach(function(path) {
+			map.removeLayer(path);
+		});
 		mapMarkers = [];
 		paths = [];
+		$('#list-group').html('');
+		$('#map_left_col').removeClass('col-md-9');
+
 		var terms = $('#terms').val()
 
 		submitButton.attr("disabled", true);
@@ -215,7 +221,7 @@ function createPath(map, lat1, long1, lat2, long2){
 	return polyline;
 }
 
-function appendArray( mainArray,  arrayToAdd) {
+function appendArray(mainArray,  arrayToAdd) {
 	for (var i = 0 ; i < arrayToAdd.length; i++) {
 		mainArray.push(arrayToAdd[i]);
 	}
