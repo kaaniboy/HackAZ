@@ -5,12 +5,34 @@ $(document).ready(function() {
 	var mapMarkers = [];
 
 	breakfastIcon = L.icon({
-    iconUrl: 'static/img/breakfast.png'
+    iconUrl: 'static/img/breakfast.png',
 
     iconSize:     [32, 37], // size of the icon
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 	});
+	lunchIcon = L.icon({
+    iconUrl: 'static/img/lunch.png',
+
+    iconSize:     [32, 37], // size of the icon
+    iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+	});
+	dinnerIcon = L.icon({
+    iconUrl: 'static/img/dinner.png',
+
+    iconSize:     [32, 37], // size of the icon
+    iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+	});
+	activityIcon = L.icon({
+    iconUrl: 'static/img/activity.png',
+
+    iconSize:     [32, 37], // size of the icon
+    iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+	});
+
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 			attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -91,9 +113,19 @@ $(document).ready(function() {
 				schedule.push(lunch);
 				appendArray(schedule, afternoonActivities);
 				schedule.push(dinner);
-
+				console.log(schedule);
 				for(var i = 0; i < schedule.length; i++) {
-					var marker = addMarker(map, schedule[i]);
+					var marker = null;
+					if(i == 0) {
+						marker = addMarker(map, schedule[i], breakfastIcon);
+					} else if(i == 3) {
+						marker = addMarker(map, schedule[i], lunchIcon);
+					} else if(i == 6) {
+						marker = addMarker(map, schedule[i], dinnerIcon);
+					} else {
+						marker = addMarker(map, schedule[i], activityIcon);
+					}
+
 					mapMarkers.push(marker);
 
 					if(i != 0) {
@@ -121,10 +153,10 @@ function scrollToMap() {
     }, 2000);
 }
 
-function addMarker(map, activity){
+function addMarker(map, activity, icon){
 	console.log("addMarker called.");
 
-	var marker = L.marker([activity.latitude, activity.longitude]).addTo(map);
+	var marker = L.marker([activity.latitude, activity.longitude], {icon: icon}).addTo(map);
 	var popupHTML = '<div class="marker-popup">';
 
 	if(activity.image_list != null) {
