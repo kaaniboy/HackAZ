@@ -2,6 +2,7 @@ from __future__ import print_function
 from flask import jsonify
 from flask import Flask
 from flask import request
+from flask import render_template
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 import twitter
@@ -30,6 +31,10 @@ app = Flask(__name__)
 @app.route("/")
 def index():
 	return "HackAZ 2017 - Travel Scheduler"
+
+@app.route("/home")
+def home():
+	return render_template('index.html')
 
 @app.route("/restaurants")
 def restaurants():
