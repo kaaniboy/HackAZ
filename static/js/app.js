@@ -5,28 +5,28 @@ $(document).ready(function() {
 	var mapMarkers = [];
 
 	breakfastIcon = L.icon({
-    iconUrl: 'static/img/breakfast.png',
+    iconUrl: '/static/img/breakfast.png',
 
     iconSize:     [32, 37], // size of the icon
     iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 	});
 	lunchIcon = L.icon({
-    iconUrl: 'static/img/lunch.png',
+    iconUrl: '/static/img/lunch.png',
 
     iconSize:     [32, 37], // size of the icon
     iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 	});
 	dinnerIcon = L.icon({
-    iconUrl: 'static/img/dinner.png',
+    iconUrl: '/static/img/dinner.png',
 
     iconSize:     [32, 37], // size of the icon
     iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
 	});
 	activityIcon = L.icon({
-    iconUrl: 'static/img/activity.png',
+    iconUrl: '/static/img/activity.png',
 
     iconSize:     [32, 37], // size of the icon
     iconAnchor:   [16, 37], // point of the icon which will correspond to marker's location
