@@ -210,6 +210,12 @@ function addListElement(activity) {
 	listElement.setAttribute("class", "list-group-item");
 	listElement.setAttribute("count", numElements);
 
+	/*if(numElements == 0 || numElements == 3 || numElements == 6) {
+		listElement.setAttribute("class", "purple-border");
+	} else {
+		listElement.setAttribute("class", "green-border");
+	}*/
+
 	listElement.innerHTML = "<h5>" + (numElements + 1) + ". " + activity.name + "</h5>";
 
 	listElement.addEventListener('click', function() {
