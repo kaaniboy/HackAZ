@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>HackAZ 2017</title>
+    <title>Take Off</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -65,6 +65,9 @@
       .bootstrap-tagsinput {
         width: 100% !important;
       }
+      .tech-list li{
+        padding-bottom: 5px;
+      }
     </style>
 
 </head>
@@ -77,7 +80,7 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Aviato</a>
+                <a class="navbar-brand page-scroll" href="#page-top">Takeoff</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -102,11 +105,9 @@
     <header id="top">
         <div class="header-content">
             <div class="header-content-inner">
-                <h1 id="homeHeading">Find The Events That Appeal Most To You</h1>
+                <h1 id="homeHeading">Find The Activities That Suit You Best</h1>
                 <hr>
-                <p>Website takes a combination of current hot attractions and your
-                preferences to feed you events most fit to your liking!</p>
-                <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out More</a>
+                <p>A website that uses <b>genetic algorithms</b> to create a day-long vacation schedule tailored to your own interests.</p>
             </div>
         </div>
     </header>
@@ -115,9 +116,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">The one stop shop!</h2>
+                    <h2 class="section-heading">How it works</h2>
                     <hr class="light">
-                    <p class="text-faded">Using genetic algorithms, a process mimicking biological evolution, with more and more preferences expressed, Website will make sure to display events that are most "fit" for you. </p>
+                    <p class="text-faded">Enter your current city as well as a list of your personal interests. Then, our genetic algorithm will automatically create you a unique schedule for the day.</p>
                     <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a>
                 </div>
             </div>
@@ -155,7 +156,15 @@
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Want to see the code behind this project?</h2>
                     <hr class="primary">
-                    <p>This site was created at HackAZ 2017. Click below to see the code.</p>
+                    <p>This site was created by the <i>Phoenix AZ Hackers</i> at HackAZ 2017.</p>
+                    <p><i>Technologies used:</i></p>
+                    <ul class="tech-list" style="list-style:none;">
+                      <li>Our own <b>genetic algorithm implementation</b> for optimizing schedules.</li>
+                      <li><b>Amadeus and Yelp APIs</b> for retrieving restaurants and activities.</li>
+                      <li><b>Google Geocoding API</b> to retrieve city coordinates.</li>
+                      <li><b>Bootstrap/jQuery</b>for web interactivity.</li>
+                      <li><b>Leaflet.js</b> for map interactions.</li>
+                    </ul>
                 </div>
                 <div class="col-lg-6 col-lg-offset-3 text-center">
                     <i class="fa fa-github fa-3x sr-code"></i>
