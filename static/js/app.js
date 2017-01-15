@@ -4,7 +4,7 @@ var paths = [];
 
 $(document).ready(function() {
 	var map = L.map('map').setView([33.448376, -112.074036], 13);
-
+	$('#map_right_col').hide();
 	breakfastIcon = L.icon({
     iconUrl: '/static/img/breakfast.png',
 
@@ -77,6 +77,8 @@ $(document).ready(function() {
 		paths = [];
 		$('#list-group').html('');
 		$('#map_left_col').removeClass('col-md-9');
+		$('#map_right_col').hide();
+		map._onResize();
 
 		var terms = $('#terms').val()
 
@@ -145,6 +147,7 @@ $(document).ready(function() {
 					}
 				}
 				$('#map_left_col').addClass('col-md-9');
+				$('#map_right_col').show();
 
 				scrollToMap();
 				var group = new L.featureGroup(mapMarkers);
@@ -186,6 +189,15 @@ function addMarker(map, activity, icon){
 
 	addListElement(activity);
 	marker.bindPopup(popupHTML);
+
+	marker.index = mapMarkers.length;
+	marker.on('click', function(event) {
+		var enclosingListGroup = $('#list-group');
+		resetListColoring(enclosingListGroup);
+		enclosingListGroup.children().eq(this.index).addClass('active');
+		console.log(this.index);
+	});
+
 	return marker;
 }
 
