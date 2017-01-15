@@ -60,7 +60,7 @@ def activities():
 	terms = request.args.get('terms').split(',')
 	return jsonify(retrieve_activities(latitude, longitude, terms))
 
-def retrieve_activities(latitude, longitude, terms):
+def retrieve_activities(latitude, longitude, terms):	
 	complete_data = []
 	for term in terms:
 		params = {
