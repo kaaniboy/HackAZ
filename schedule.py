@@ -135,6 +135,8 @@ class Schedule:
             return False
         if self.afternoon_activities[0] == self.afternoon_activities[1]:
             return False
+        if self.breakfast == self.lunch or self.lunch == self.dinner or self.breakfast == self.dinner:
+            return False
         for activity in self.morning_activities:
             if activity in self.afternoon_activities:
                 return False
