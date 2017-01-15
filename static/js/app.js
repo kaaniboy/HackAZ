@@ -1,9 +1,16 @@
-console.log("app.js started.");
 GOOGLE_API_KEY = 'AIzaSyCMgw5bWf-ZIGIsUYcFgK8v5_4uQeJUTzE';
 
 $(document).ready(function() {
 	var map = L.map('map').setView([33.448376, -112.074036], 13);
 	var mapMarkers = [];
+
+	breakfastIcon = L.icon({
+    iconUrl: 'static/img/breakfast.png'
+
+    iconSize:     [32, 37], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 			attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
