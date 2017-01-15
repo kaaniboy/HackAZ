@@ -66,7 +66,11 @@ def retrieve_activities(latitude, longitude, terms):
 		data = [extract_business(business, term) for business in response.businesses]
 		complete_data = complete_data + data
 
-	complete_data = complete_data + retrieve_amadeus(latitude, longitude, '10')
+	if os.environ.get('AMADEUS', 'TRUE') == 'TRUE':
+		console.log('Not using Amadeus results', file=sys.stderr)
+		complete_data = complete_data + retrieve_amadeus(latitude, longitude, '10')
+	else:
+		console.log('Using Amadeus results', file=sys.stderr)
 
 	return complete_data
 
